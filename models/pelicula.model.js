@@ -2,12 +2,12 @@ const {Schema, model, SchemaTypes} = require('mongoose');
 
 const PeliculaSchema = Schema({
     autor:{
-        require: true,
+        required: true,
         type: Schema.Types.ObjectId,
         ref:'Autor'
     },
     tipoPeli:{
-        require: true,
+        required: true,
         type: Schema.Types.ObjectId,
         ref:'TipoPelicula'
     }

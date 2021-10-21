@@ -5,11 +5,11 @@ const {Schema, model} = require('mongoose');
 const TipoPeliSchema = Schema({
     titulo:{
         type: String,
-        require: true
+        required: true
     },
     categoria:{
         type: String,
-        require: true,
+        required: true,
     }
 },{ collection: 'TipoPelis'});
 //Configuración opcional para cambiar el id por Uid

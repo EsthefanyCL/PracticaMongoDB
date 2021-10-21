@@ -1,5 +1,5 @@
 const {response} = require('express');
-const bcrypt = require('bcryptjs');
+
 const Autor = require('../models/autor.model');
 
 const getAutores = async(req, res) => {
@@ -55,77 +55,73 @@ const crearAutor = async(req, res = response) => {
 }
 
 const actualizarAutor = async(req, res = response) => {
-
-    const id = req.params.id;
-    const uid = req.uid;
-
+    const uid = req.params.id;
+        
     try {
-        const local = await Autor.findById(id);
+        const autorDB = await Autor.findById(uid);
 
-        if (!local) {
+        if (!autorDB){
             return res.status(404).json({
-                ok: true,
-                msg: 'Autor no encontrado por id',
+                ok: false,
+                msg: 'No existe un autor con ese id'
             });
         }
 
-        const cambiosAutor = {
-            ...req.body,
-            autor: uid
+        //Codigo previo a la actualizacion 
+        const {nombre, fecha_nacimiento} = req.body;
+        if(autorDB.nombre !== nombre){
+            const existeNombre = await Autor.findOne({nombre});
+            if (existeNombre){
+                return res.status(400).json({
+                    ok: false,
+                    msg: 'Ya existe un autor con este email'
+                });
+            }
         }
-
-        const autorActualizado = await Autor.findByIdAndUpdate(id, cambiosAutor, { new: true });
-
+        campos.nombre = nombre;
+               
+        //actualizacion de datos
+        const autorActualizado = await Autor.findByIdAndUpdate(uid, campos, {new:true});
 
         res.json({
-            ok: true,
+            ok:true,
             autor: autorActualizado
-        })
+        });
+
 
     } catch (error) {
-
         console.log(error);
-
         res.status(500).json({
-            ok: false,
-            msg: 'No se puede actualizar el autor, consulte con el administrador'
-        })
+            ok:false,
+            msg: 'Error al actualizar autor'
+        });
     }
-
 }
 
 const eliminarAutor = async(req, res = response) => {
-
-    const id = req.params.id;
-
+    const uid = req.params.id;
     try {
-
-        const autor = await Autor.findById(id);
-
-        if (!autor) {
+        const autorDB = await Autor.findById(uid);
+        if(!autorDB){
             return res.status(404).json({
-                ok: true,
-                msg: 'El autor no encontrado por id',
+                ok: false,
+                msg: 'No existe un autor con ese id'
             });
         }
 
-        await Autor.findByIdAndDelete(id);
+        await Autor.findByIdAndDelete(uid);
 
         res.json({
-            ok: true,
-            msg: 'Autor borrado'
+            ok:true,
+            msg: 'Autor eliminado de la bd'
         });
-
     } catch (error) {
-
         console.log(error);
-
         res.status(500).json({
-            ok: false,
-            msg: 'Autor no puede eliminarse, consulte con el administrador'
-        })
+            ok:false,
+            msg: 'No es posible eliminar autor'
+        });
     }
-
 }
 
 module.exports = {

@@ -1,13 +1,12 @@
 /*
 Ruta:/api/autor
 */
-
 const {Router} = require('express');
 //Check: para validar datos, ej nombre no este vacio o el password
 const {check} = require('express-validator');
 const {validarCampos} = require('../middlewares/validar-campos');
 const { validarJWT } = require('../middlewares/validar-jwt');
-const {crearAutor, getAutores } = require('../controllers/autor.controller');
+const {crearAutor, getAutores, eliminarAutor, actualizarAutor} = require('../controllers/autor.controller');
 
 const router = Router();
 
@@ -20,5 +19,12 @@ router.post('/',
         validarCampos,
     ] ,
     crearAutor);
-
+router.put('/:id', 
+    [
+        validarJWT,
+        check('nombre', 'El nombre del autor es obligatorio').not().isEmpty(),
+        validarCampos,
+    ],
+    actualizarAutor);
+router.delete('/:id',validarJWT, eliminarAutor);  
 module.exports = router;

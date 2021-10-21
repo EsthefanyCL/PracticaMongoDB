@@ -3,11 +3,11 @@ const {Schema, model} = require('mongoose');
 const AlquilerSchema = Schema({
 
     fecha_alquiler:{
-        type: Date,
+        type: String,
         required: true
     },
     fecha_devolucion:{
-        type: Date,
+        type: String,
     },
     valor:{
         type: Number,
@@ -21,6 +21,11 @@ const AlquilerSchema = Schema({
         required: true,
         type: Schema.Types.ObjectId,
         ref:'Usuario'
+    },
+    Dvd:{
+        required: true,
+        type: Schema.Types.ObjectId,
+        ref:'Dvd'
     }
 },{ collection: 'alquileres'});
 

@@ -4,19 +4,12 @@ const Dvd = require('../models/Dvd.model');
 
 const getDvd = async(req, res = response) => {
 
-    const desde = Number(req.query.desde) || 0;
-    const limite = Number(req.query.limite) || 0;
+    const dvds= await Dvd.find({},'numCopias formato')
+                     .populate('pelicula','autor tipoPeli');
     
-    const [dvd, total] = await Promise.all([
-        Dvd
-        .find({}, 'numCopias formato pelicula')
-        .skip(desde) //variable de paginacion
-        .limit(limite), // cuantos valores traer
-        Dvd.countDocuments()
-    ]);
     res.json({
-        ok: true,
-        dvd
+        ok:true,
+        dvds
     });
 }
 

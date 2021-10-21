@@ -3,20 +3,13 @@ const Alquiler = require('../models/alquiler.model');
 const { eliminarUsuario } = require('./usuarios.controller');
 
 const getAlquiler = async(req, res = response) => {
-    //const ponente = await Ponente.find();
-    //para la paginacion: ponentes/?desde=5 se utiliza & para concatenar parametros
-    const desde = Number(req.query.desde) || 0;
-    const limite = Number(req.query.limite) || 0;
+
+    const alquileres= await Alquiler.find()
+                                   .populate('usuario','id nombre num_celular')
+                                   .populate('Dvd', 'pelicula formato')
     
-    const [alquileres, total] = await Promise.all([
-        Alquiler
-        .find({}, 'fecha_alquiler fecha_devolucion  valor cantidad usuario')
-        .skip(desde) //variable de paginacion
-        .limit(limite), // cuantos valores traer
-        Alquiler.countDocuments()
-    ]);
     res.json({
-        ok: true,
+        ok:true,
         alquileres
     });
 }
@@ -31,15 +24,12 @@ const crearAlquiler = async(req, res = response) => {
 
     try {
     //creamos un objeto de la clase model Usuario
-    const alquiler = new Alquiler(req.body);
-
+    const alquilerDB = await alquiler.save();
     //indicamos a mongoose que registre al usuario en la bd
-    await alquiler.save();
-
     
     res.json({
         ok:true,
-        autor
+        alquiler: alquilerDB
     });
 
     } catch (error) {

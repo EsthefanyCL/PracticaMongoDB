@@ -3,10 +3,10 @@ const {Schema, model} = require('mongoose');
 const AutorSchema = Schema({
     nombre:{
         type: String,
-        require: true
+        required: true
     },
     fecha_nacimiento:{
-        type: Date
+        type: String,
     }    
 },{ collection: 'autores'});
 

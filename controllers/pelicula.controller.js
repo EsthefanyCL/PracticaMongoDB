@@ -4,7 +4,8 @@ const Pelicula = require('../models/pelicula.model');
 const getPeli = async(req, res = response) => {
 
     const peliculas = await Pelicula.find()
-                                    .populate('autor', 'tipoPeli');
+                                    .populate('autor', 'nombre')
+                                    .populate('tipoPeli', 'titulo categoria');
 
     res.json({
         ok: true,

@@ -12,7 +12,6 @@ router.get('/', getAlquiler);
 router.post('/',
     [
         validarJWT,
-        check('fecha_alquiler','La fecha de alquiler es obligatorio').not().isEmpty(),
         check('valor','el valor de alquiler es obligatorio').not().isEmpty(),
         check('cantidad','La cantidad de alquiler es obligatorio').not().isEmpty(),
         validarCampos,
@@ -21,7 +20,7 @@ router.post('/',
 router.put('/:id',
     [
         validarJWT,
-        check('fecha_alquiler', 'La fecha de alquiler es obligatorio').not().isEmpty(),
+        check('valor','el valor de alquiler es obligatorio').not().isEmpty(),
         validarCampos,   
     ] ,
     actualizarAlquiler);

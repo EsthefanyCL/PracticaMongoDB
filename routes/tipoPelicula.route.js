@@ -6,12 +6,11 @@ const {Router} = require('express');
 const {check} = require('express-validator');
 const { getTipoPelis, crearTipoPelis } = require('../controllers/tipoPelicula.controller');
 const {validarCampos} = require('../middlewares/validar-campos');
-
 const { validarJWT } = require('../middlewares/validar-jwt');
 
 const router = Router();
 
-router.get('/',validarJWT, getTipoPelis);
+router.get('/', getTipoPelis);
 router.post('/',
     [
         check('titulo', 'El titulo es obligatorio').not().isEmpty(),
